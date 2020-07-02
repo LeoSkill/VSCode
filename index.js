@@ -1,4 +1,0 @@
-first
-one
-two
-three

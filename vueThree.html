@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue入门 3</title>
+    <script src="vue.min.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <div>
+            <input v-model='inputValue' />
+            <button @click="handleSubmit">提交</button>
+        </div>
+        <ul>
+            <!-- 3-1 todolist功能开发 -->
+            <!-- <li v-for="(item, index) of list" :key="index">{{item}}</li> -->
+
+            <!-- 3-2 todolist组件拆分 -->
+            <todo-item v-for="(item, index) of list" :key="index" :content="item" :index="index" @delete="handleDelete"></todo-item>
+        </ul>
+
+
+    </div>
+
+    <script>
+        // 3-2 todolist组件拆分 --- 全局组件；
+        // 3-3 组件与实例的关系
+        Vue.component('todo-item', { // vue的每一个实例都是一个vue的实例，所以实例里边有的，组件里边都可以有
+            props: ['content', 'index'], // 接收值
+            template: '<li @click="handleClick">{{content}}</li>',
+            methods: {
+                handleClick: function() {
+                    this.$emit('delete', this.index)
+                }
+            }
+        })
+
+        // 3-2 todolist组件拆分 --- 局部组件
+        /* var TodoItem = { 
+            template: '<li>item</li>'
+        } */
+
+
+
+        new Vue({ // 大实例，每一个组件都是一个小的vue实例 ；所以，任何一个vue项目是有=由很多vue实例组成的
+            el: '#root',
+            // 3-2 todolist组件拆分 --- 局部组件
+            // components: { 
+            //     'todo-item': TodoItem
+            // },
+            data: {
+                // 3-1 todolist功能开发
+                inputValue: '',
+                list: []
+
+
+            },
+            methods: {
+                // 3-1 todolist功能开发
+                handleSubmit: function() {
+                    this.list.push(this.inputValue)
+                    this.inputValue = ''
+                },
+
+                // 3-4 实现todolist的删除功能
+                handleDelete: function(index) {
+                    this.list.splice(index, 1)
+                }
+
+
+            }
+        })
+    </script>
+</body>
+
+</html>

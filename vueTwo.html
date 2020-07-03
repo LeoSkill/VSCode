@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue入门 2</title>
+    <script src="vue.min.js"></script>
+</head>
+
+<body>
+    <!-- *** 挂载点，模板，实例之间的关系 -->
+
+    <!-- *** 模板，就是挂载点内部的内容；可以用 template：'' 的方法写在vue实例里边-->
+    <div id="root">
+        <!-- 2-3 Vue实例中的数据，事件和方法 -->
+        <div v-text="vtext"></div>
+        <div v-html="vhtml"></div>
+        <div v-on:click="()=>{alert(123)}">{{von}}</div>
+        <div v-on:click="handleClick_one">{{von}}</div>
+        <div @click="handleClick_one">{{von}}</div>
+
+        <!-- 2-3 Vue中的属性绑定和双向数据绑定 -->
+        <div v-bind:title="vbind">v-bind指令</div>
+        <div :title="vbind">v-bind指令</div>
+        <input v-model="content" />
+        <div>{{content}}</div>
+
+        <!-- 2-5 Vue中的计算属性和侦听器 -->
+        姓：<input v-model="firstName"> 名：
+        <input v-model="lastName">
+        <div>{{firstName}}{{lastName}}</div>
+        <div>{{fullName}}</div>
+        <div>{{count}}</div>
+
+        <!-- 2-6 v-if,v-show与v-for指令 -->
+        <div v-if="show">v-if指令</div>
+        <div v-show="show">v-show指令</div>
+        <button @click="handleClick_two">toggle</button>
+        <ul>
+            <li v-for="(item, index) of list" :key="index">{{item}}</li>
+        </ul>
+
+    </div>
+
+    <script>
+        new Vue({
+            // *** el对应的标签为挂载点
+            el: '#root',
+            data: {
+                // 2-3 Vue实例中的数据，事件和方法
+                vtext: '<h1>v-text指令</h1>',
+                vhtml: '<h1>v-html指令</h1>',
+                von: 'v-on指令',
+
+                // 2-4 Vue中的属性绑定和双向数据绑定
+                vbind: 'v-bind指令的title',
+                content: 'v-model指令',
+
+                // 2-5 Vue中的计算属性和侦听器
+                firstName: '',
+                lastName: '',
+                count: 0,
+
+                // 2-6 v-if,v-show与v-for指令
+                show: true,
+                list: [1, 2, 3]
+
+            },
+            methods: {
+                // 2-3 Vue实例中的数据，事件和方法
+                handleClick_one: function() {
+                    this.von = "改变v-on指令的数据"
+                },
+
+                // 2-6 v-if,v-show与v-for指令
+                handleClick_two: function() {
+                    this.show = !this.show;
+                },
+            },
+            computed: {
+                // 2-5 Vue中的计算属性和侦听器
+                fullName: function() {
+                    return this.firstName + this.lastName
+                },
+            },
+            watch: {
+                // 2-5 Vue中的计算属性和侦听器
+                /* firstName: function() {
+                    this.count++
+                },
+                lastName: function() {
+                    this.count++
+                }, */
+                fullName: function() {
+                    this.count++
+                },
+
+
+            }
+
+
+        })
+    </script>
+</body>
+
+</html>
